@@ -12,18 +12,21 @@ public class Player : MonoBehaviour
     public float JumpHeight;
     public bool jumping = false;
     private Vector2 startPosition;
-    
+    private Animator animator;
+
     // Start is called before the first frame update
     void Start()
     {
-        rb = GetComponent <Rigidbody2D>();  
+        rb = GetComponent <Rigidbody2D>();
+        animator = GetComponent<Animator>();
         startPosition = transform.position;
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        float move = Input.GetAxis("Horizontal");
+        float moving = Input.GetAxis("Horizontal");
         Vector2 position = transform.position;
         if (position.y < -10.5)
         {
@@ -31,9 +34,10 @@ public class Player : MonoBehaviour
         }
         else
         {
-            position.x = position.x + (speed * Time.deltaTime * move);
+            position.x = position.x + (speed * Time.deltaTime * moving);
         }
         transform.position = position;
+        updateAnimation(moving);
 
         if (Input.GetKeyDown(KeyCode.Space) && !jumping)
         {
@@ -46,6 +50,19 @@ public class Player : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         jumping = false;
+    }
+    private void updateAnimation(float moving)
+    {
+        animator.SetFloat("Moving", moving);
+        if (moving > 0)
+        {
+            animator.SetInteger("Direction", 1);
+        }
+        else if (moving < 0)
+        {
+            animator.SetInteger("Direction", -1);
+        }
+
     }
 
 }

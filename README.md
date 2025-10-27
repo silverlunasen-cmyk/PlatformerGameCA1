@@ -27,3 +27,19 @@ Version 1.1 (26/10/2025)
 TODO - 
 * All from above
 * Work on animations;
+
+Version 1.2 (27/10/2025)
+
+* Redid the level graphics
+* Got animations working for character, idle and walking;
+* Found out how to do platforms, coded it in to work;
+* Created an enemy character;
+* Enemy animations are complete;
+
+BUGS 
+* Enemy doesn't move, only walks in place;
+
+TODO - 
+* Fix bugs
+* Find out another gimmick to make;
+* Create more of level;
