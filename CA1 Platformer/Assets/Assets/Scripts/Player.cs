@@ -13,6 +13,7 @@ public class Player : MonoBehaviour
     public bool jumping = false;
     private Vector2 startPosition;
     private Animator animator;
+    public GameObject projectilePrefab;
 
     // Start is called before the first frame update
     void Start()
@@ -44,6 +45,14 @@ public class Player : MonoBehaviour
             rb.AddForce(new Vector2(0, Mathf.Sqrt(-2 * Physics2D.gravity.y * JumpHeight)),
                 ForceMode2D.Impulse);
             jumping = true;
+        }
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            GameObject projectile = Instantiate(projectilePrefab,
+                rb.position, Quaternion.identity);
+            Projectile pr = projectile.GetComponent<Projectile>();
+            pr.Launch(new Vector2(animator.GetInteger("Direction"), 0), 300);
+
         }
 
     }
