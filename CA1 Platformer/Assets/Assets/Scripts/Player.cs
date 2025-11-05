@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static Cinemachine.DocumentationSortingAttribute;
 
 public class Player : MonoBehaviour
 
@@ -14,6 +15,12 @@ public class Player : MonoBehaviour
     private Vector2 startPosition;
     private Animator animator;
     public GameObject projectilePrefab;
+    public float defaultPowerUpTime = 10;
+    private bool isPowerUp = false;
+    private float powerUpTimeRemaining = 10;
+    private AudioSource _audio;
+
+
 
     // Start is called before the first frame update
     void Start()
@@ -21,7 +28,7 @@ public class Player : MonoBehaviour
         rb = GetComponent <Rigidbody2D>();
         animator = GetComponent<Animator>();
         startPosition = transform.position;
-
+        _audio = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -54,6 +61,22 @@ public class Player : MonoBehaviour
             pr.Launch(new Vector2(animator.GetInteger("Direction"), 0), 300);
 
         }
+        if (isPowerUp)
+        {
+            powerUpTimeRemaining -= Time.deltaTime;
+            if (powerUpTimeRemaining < 0)
+            {
+                isPowerUp = false;
+                powerUpTimeRemaining = defaultPowerUpTime;
+                animator.speed /= 2;
+                speed /= 2;
+                _audio.Stop();
+                
+            }
+
+        }
+   
+
 
     }
     private void OnCollisionEnter2D(Collision2D collision)
@@ -71,6 +94,32 @@ public class Player : MonoBehaviour
         {
             animator.SetInteger("Direction", -1);
         }
+
+    }
+    public void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (!isPowerUp && collision.gameObject.tag == "SpeedPowerUp")
+        {
+            Destroy(collision.gameObject);
+            speed = speed * 2;
+            isPowerUp = true;
+            animator.speed *= 2;
+            _audio.Play();
+
+        }
+        if (!isPowerUp && collision.gameObject.tag == "JumpPowerUp")
+        {
+            Destroy(collision.gameObject);
+            JumpHeight = JumpHeight * 2;
+            isPowerUp = true;
+            animator.speed *= 2;
+            _audio.Play();
+        }
+        if (!isPowerUp && collision.gameObject.tag == "Checkpoint")
+        {
+            startPosition = transform.position;
+        }
+
 
     }
 

@@ -58,6 +58,20 @@
 * Code a disappearing platform, when you step on it, it vanishes/falls;
 * Fix the bug with the projectile.
 
+## Version 1.4 (05/11/2025)
+
+* Created a powerup;
+* Created a second powerup for Jumping
+* Made a platform that falls after you jump on it.
+* Continued trying to work on the level.
+* Created a checkpoint.
+
+### TODO
+* Figure out why the projectile only sometimes vanishes.
+* Sort out the enemy, it's bugged.
+
+
+
 ## Author's note 
 
 * *=  All placeholder graphics can be found in the "Placeholder folder"
