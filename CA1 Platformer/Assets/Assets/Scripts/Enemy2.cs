@@ -1,4 +1,5 @@
 
+using System;
 using UnityEngine;
 
 public class Enemy2 : MonoBehaviour
@@ -6,13 +7,16 @@ public class Enemy2 : MonoBehaviour
     Animator _animator;
     int direction = 1;
     float timeInDirection;
-
     public float distanceTime;
     public float speed;
     public int health;
     bool isDead = false;
     bool isIdle = false;
     public float idleTime = 2;
+    float dieTime = 1;
+    [SerializeField] float fireTimer = 0.5f;
+    float fireCountdown = 0;
+    [SerializeField] GameObject projectilePrefab;
 
 
 
@@ -57,6 +61,40 @@ public class Enemy2 : MonoBehaviour
             {
                 idleTime -= Time.deltaTime;
             }
+
+        }
+        else
+        {
+            dieTime -= Time.deltaTime;
+            if (dieTime < 0)
+            {
+                Destroy(this.gameObject);
+            }
+        }
+    }
+       private void OnTriggerEnter2D(Collider2D collision)
+        {
+        if (collision.gameObject.CompareTag("PlayerProjectile"));
+        {
+            health--;
+            if (health <= 0)
+            {
+                isDead = true;
+                _animator.SetBool("IsDead", true);
+            }
+
+        }
+
+    }
+    private void fire()
+    {
+        if (fireCountdown < 0)
+        {
+            fireCountdown = fireTimer;
+            GameObject projectile = Instantiate(projectilePrefab
+                , GetComponent<Rigidbody2D>().position, Quaternion.identity);
+            Projectile script = projectile.GetComponent<Projectile>();
+            script.Launch(new Vector2(direction, 0), 300);
         }
     }
 }

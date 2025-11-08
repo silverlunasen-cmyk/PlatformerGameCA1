@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 using static Cinemachine.DocumentationSortingAttribute;
 
 public class Player : MonoBehaviour
@@ -19,6 +20,7 @@ public class Player : MonoBehaviour
     private bool isPowerUp = false;
     private float powerUpTimeRemaining = 10;
     private AudioSource _audio;
+    public double reloadTime = 0.05;
 
 
 
@@ -59,6 +61,11 @@ public class Player : MonoBehaviour
                 rb.position, Quaternion.identity);
             Projectile pr = projectile.GetComponent<Projectile>();
             pr.Launch(new Vector2(animator.GetInteger("Direction"), 0), 300);
+            reloadTime -= Time.deltaTime;
+            if (reloadTime == 0)
+            {
+                animator.SetBool("IsShooting", false);
+            }
 
         }
         if (isPowerUp)
@@ -121,6 +128,11 @@ public class Player : MonoBehaviour
         }
 
 
+
+    }
+    public void CollectKey()
+    {
+        
     }
 
 }

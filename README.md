@@ -71,6 +71,11 @@
 * Sort out the enemy, it's bugged.
 
 
+## Version 1.5 (07/11/2025)
+
+* Made the enemy functional
+* Touched up the animations;
+* Fixed the bug with the projectile, i forgot to set as trigger;
 
 ## Author's note 
 
