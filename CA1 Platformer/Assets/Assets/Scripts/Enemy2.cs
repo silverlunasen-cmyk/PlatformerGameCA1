@@ -61,6 +61,16 @@ public class Enemy2 : MonoBehaviour
             {
                 idleTime -= Time.deltaTime;
             }
+            RaycastHit2D hit = Physics2D.Raycast(transform.position,
+                new Vector2(direction, 0), 5f, LayerMask.GetMask("Character"));
+            if (hit.collider != null)
+            {
+                if (hit.collider.GetComponent<Player>() != null)
+                {
+                    fire();
+                }
+            }
+            fireCountdown -= Time.deltaTime;
 
         }
         else
@@ -72,9 +82,9 @@ public class Enemy2 : MonoBehaviour
             }
         }
     }
-       private void OnTriggerEnter2D(Collider2D collision)
-        {
-        if (collision.gameObject.CompareTag("PlayerProjectile"));
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("PlayerProjectile")) ;
         {
             health--;
             if (health <= 0)
@@ -96,5 +106,10 @@ public class Enemy2 : MonoBehaviour
             Projectile script = projectile.GetComponent<Projectile>();
             script.Launch(new Vector2(direction, 0), 300);
         }
+    }
+    public GameObject key;
+    private void OnDestroy()
+    {
+        Instantiate(key, transform.position, key.transform.rotation);
     }
 }

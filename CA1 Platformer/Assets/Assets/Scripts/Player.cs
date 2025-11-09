@@ -21,7 +21,10 @@ public class Player : MonoBehaviour
     private float powerUpTimeRemaining = 10;
     private AudioSource _audio;
     public double reloadTime = 0.05;
-
+    public int lives = 3;
+    [SerializeField] private UI ui;
+    public int keysCollected = 0;
+    public int totalKeys = 5;
 
 
     // Start is called before the first frame update
@@ -82,7 +85,11 @@ public class Player : MonoBehaviour
             }
 
         }
-   
+        if (lives == 0)
+        {
+            transform.position = startPosition;
+            lives = 3;
+        }
 
 
     }
@@ -126,13 +133,21 @@ public class Player : MonoBehaviour
         {
             startPosition = transform.position;
         }
-
+        if (collision.gameObject.name.Contains("EnemyProjectile"))
+        {
+            lives--;
+            ui.UpdateLives(lives);
+        }
 
 
     }
     public void CollectKey()
     {
-        
-    }
+     
+        keysCollected++;
+        ui.KeysUpdate(keysCollected, totalKeys);
+    
+}
+
 
 }

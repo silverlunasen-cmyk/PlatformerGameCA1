@@ -8,6 +8,7 @@ TagManager:
   - JumpPowerUp
   - Checkpoint
   - PlayerProjectile
+  - EnemyBullet
   layers:
   - Default
   - TransparentFX
@@ -17,8 +18,8 @@ TagManager:
   - UI
   - Character
   - Bullet
-  - 
-  - 
+  - EnemyBullet
+  - Enemy
   - 
   - 
   - 

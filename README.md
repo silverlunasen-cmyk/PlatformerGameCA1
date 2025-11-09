@@ -77,6 +77,18 @@
 * Touched up the animations;
 * Fixed the bug with the projectile, i forgot to set as trigger;
 
+## Version 1.6 (08/11/2025)
+
+* Made the enemy shoot;
+* Made the character die;
+* Added a functional menu
+* Added a functional collectible;
+* Added a drop for the enemy;
+
+## TODO
+
+* Finish this damn thing off;
+
 ## Author's note 
 
 * *=  All placeholder graphics can be found in the "Placeholder folder"
