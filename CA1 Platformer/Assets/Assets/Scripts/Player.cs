@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.SocialPlatforms.Impl;
 using static Cinemachine.DocumentationSortingAttribute;
 
@@ -17,15 +18,16 @@ public class Player : MonoBehaviour
     private Animator animator;
     public GameObject projectilePrefab;
     public float defaultPowerUpTime = 10;
-    private bool isPowerUp = false;
     private float powerUpTimeRemaining = 10;
     private AudioSource _audio;
     public double reloadTime = 0.05;
     public int lives = 3;
     [SerializeField] private UI ui;
-    public int keysCollected = 0;
+    public int keysCollected;
     public int totalKeys = 5;
-
+    public bool isSpeedPowerUp = false;
+    public bool isJumpPowerUp = false;
+    public bool win = false;
 
     // Start is called before the first frame update
     void Start()
@@ -52,11 +54,12 @@ public class Player : MonoBehaviour
         transform.position = position;
         updateAnimation(moving);
 
-        if (Input.GetKeyDown(KeyCode.Space) && !jumping)
+        if (Input.GetKeyDown(KeyCode.Space)&& !jumping)
         {
             rb.AddForce(new Vector2(0, Mathf.Sqrt(-2 * Physics2D.gravity.y * JumpHeight)),
                 ForceMode2D.Impulse);
             jumping = true;
+    
         }
         if (Input.GetKeyDown(KeyCode.F))
         {
@@ -65,37 +68,57 @@ public class Player : MonoBehaviour
             Projectile pr = projectile.GetComponent<Projectile>();
             pr.Launch(new Vector2(animator.GetInteger("Direction"), 0), 300);
             reloadTime -= Time.deltaTime;
-            if (reloadTime == 0)
-            {
-                animator.SetBool("IsShooting", false);
-            }
 
         }
-        if (isPowerUp)
+        if (isSpeedPowerUp)
         {
             powerUpTimeRemaining -= Time.deltaTime;
             if (powerUpTimeRemaining < 0)
             {
-                isPowerUp = false;
+                isSpeedPowerUp = false;
                 powerUpTimeRemaining = defaultPowerUpTime;
                 animator.speed /= 2;
                 speed /= 2;
-                _audio.Stop();
                 
             }
 
         }
+        //the reason that i have them seperate is so that if you have a jump one it woudl only effect the jump and same with speed
+        if (isJumpPowerUp)
+        {
+            powerUpTimeRemaining -= Time.deltaTime;
+            if (powerUpTimeRemaining < 0)
+            {
+                isSpeedPowerUp = false;
+                powerUpTimeRemaining = defaultPowerUpTime;
+                animator.speed /= 2;
+                JumpHeight /= 2;
+
+            }
+
+        }
+        if (keysCollected >= totalKeys && !win)
+        {
+            win = true;
+        }
+    
         if (lives == 0)
         {
             transform.position = startPosition;
             lives = 3;
         }
+        if(win == true)
+        {
+            SceneManager.LoadScene("Victory");//loads the victory screen when you have finished;
+        }
+    
+
 
 
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        jumping = false;
+      jumping = false;
     }
     private void updateAnimation(float moving)
     {
@@ -112,24 +135,23 @@ public class Player : MonoBehaviour
     }
     public void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!isPowerUp && collision.gameObject.tag == "SpeedPowerUp")
+        if (!isSpeedPowerUp && collision.gameObject.tag == "SpeedPowerUp" && !isJumpPowerUp)
         {
             Destroy(collision.gameObject);
             speed = speed * 2;
-            isPowerUp = true;
+            isSpeedPowerUp = true;
             animator.speed *= 2;
-            _audio.Play();
+            _audio.pitch *=2;
 
         }
-        if (!isPowerUp && collision.gameObject.tag == "JumpPowerUp")
+        if (!isJumpPowerUp && collision.gameObject.tag == "JumpPowerUp" && !isSpeedPowerUp)
         {
             Destroy(collision.gameObject);
             JumpHeight = JumpHeight * 2;
-            isPowerUp = true;
+            isJumpPowerUp = true;
             animator.speed *= 2;
-            _audio.Play();
         }
-        if (!isPowerUp && collision.gameObject.tag == "Checkpoint")
+        if (collision.gameObject.tag == "Checkpoint")
         {
             startPosition = transform.position;
         }
@@ -145,9 +167,9 @@ public class Player : MonoBehaviour
     {
      
         keysCollected++;
-        ui.KeysUpdate(keysCollected, totalKeys);
-    
-}
+        ui.KeysUpdate(keysCollected);    
+    }
+
 
 
 }

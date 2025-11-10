@@ -9,6 +9,8 @@ TagManager:
   - Checkpoint
   - PlayerProjectile
   - EnemyBullet
+  - key
+  - Wall
   layers:
   - Default
   - TransparentFX

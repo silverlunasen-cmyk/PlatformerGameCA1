@@ -7,9 +7,9 @@ public class UI : MonoBehaviour
 {
     public Text keyText;
     public Image[] image;
-    public void KeysUpdate(int keysCollected, int totalKeys)
+    public void KeysUpdate(int keysCollected)
     {
-        keyText.text = keysCollected + "/" + totalKeys;
+        keyText.text = keysCollected.ToString();
     }
 
     public void UpdateLives(int lives)

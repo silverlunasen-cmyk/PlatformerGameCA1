@@ -87,7 +87,23 @@
 
 ## TODO
 
-* Finish this damn thing off;
+* Finish the game;
+
+
+## Version 1.7 (09/11/2025)
+
+* Finished game;
+
+
+## Known BUGS
+
+* Sometimes the speed or the jump height inexplicably halves itself, makes the game harder to use.
+* Could not implement a shooting animation because it would lock me in position or in the shooting animation;
+* Weird collision bits here and there;
+* Enemy dropped keys do not count towards the counter;
+* Keys are supposed to play the ring sound from Sonic, but they don't.
+
+
 
 ## Author's note 
 

@@ -17,6 +17,7 @@ public class Enemy2 : MonoBehaviour
     [SerializeField] float fireTimer = 0.5f;
     float fireCountdown = 0;
     [SerializeField] GameObject projectilePrefab;
+    private AudioSource _audio;
 
 
 
@@ -26,6 +27,7 @@ public class Enemy2 : MonoBehaviour
     {
         _animator = GetComponent<Animator>();
         timeInDirection = distanceTime;
+        _audio = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -70,7 +72,7 @@ public class Enemy2 : MonoBehaviour
                     fire();
                 }
             }
-            fireCountdown -= Time.deltaTime;
+            fireCountdown -= Time.deltaTime;//how long between firing
 
         }
         else
@@ -81,7 +83,7 @@ public class Enemy2 : MonoBehaviour
                 Destroy(this.gameObject);
             }
         }
-    }
+    }   
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("PlayerProjectile")) ;
@@ -89,8 +91,10 @@ public class Enemy2 : MonoBehaviour
             health--;
             if (health <= 0)
             {
+                _audio.Play();
                 isDead = true;
                 _animator.SetBool("IsDead", true);
+
             }
 
         }
@@ -110,6 +114,6 @@ public class Enemy2 : MonoBehaviour
     public GameObject key;
     private void OnDestroy()
     {
-        Instantiate(key, transform.position, key.transform.rotation);
+        Instantiate(key, transform.position, key.transform.rotation);//when it is destroyed, it makes an instantce of something, in this case i had it so it dropped a key upon death
     }
 }
